@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="mystyle.css">
+    <title>新闻收集站</title>
+    <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+</head>
+<header>
+</header>
+
+<body>
+<nav>
+    <ul class="navbar">
+        <li><a href="#" id="contentQuery">内容查询</a></li>
+        <li><a href="#" id="hotAnalysis">热度分析</a></li>
+        <li><a href="#" id="wordCloud">词云</a></li>
+    </ul>
+</nav>
+
+<h1>
+    新闻收集站
+</h1>
+
+<div id="contentQueryDiv">
+    <form id="content">
+        <br>
+        <label for="searchText">检索内容：</label>
+        <input type="text" name="title_text" id="searchText">
+        <select id="searchType">
+            <option value="title">新闻标题</option>
+            <option value="content">新闻内容</option>
+            <option value="keywords">新闻关键词</option>
+            <option value="author">新闻作者</option>
+        </select>
+        <label for="sortType"></label><select id="sortType">
+            <option value="date">按时间排序</option>
+            <option value="title">按标题排序</option>
+            <option value="author">按作者排序</option>
+        </select>
+        <input class="form-submit" type="button" value="查询" id="Text">
+    </form>
+    <div class="cardLayout" style="margin: 10px 0px">
+        <table width="100%" id="record2"></table>
+    </div>
+    <div class="button-container"> <!-- 翻页的按钮 -->
+        <button id="prevPage" class="button">上一页</button>
+        <button id="nextPage" class="button">下一页</button>
+    </div>
+    <div id="paginationInfo"></div> <!-- 用于显示页码信息 -->
+    <div id="pageJump">
+        <form id="pageTrans">
+            <label>跳转至第</label>
+            <input type="text" name="page_text" id="searchPage">
+            <label>页</label>
+            <input class="form-submit" type="button" value="跳转" id="Page">
+        </form>
+    </div> <!-- 用于进行页码跳转 -->
+</div>
+
+<div id="hotAnalysisDiv">
+    <form>
+        <br><label>检索内容：</label><input type="text" name="title_text" id="searchHot">
+        <input class="form-submit" type="button" value="热度" id="Hot">
+    </form>
+    <div id="chartContainerWrapper">
+        <div id="chartContainer"></div>
+    </div>
+</div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        var currentPage = 1; // 当前页码
+        var itemsPerPage = 10; // 每页显示的条目数
+        var data = []; // 存储查询时的所有数据
+        var totalPages; // 页数的最大值
+
+        // 显示内容查询相关内容
+        $("#contentQuery").click(function() {
+            $("#contentQueryDiv").show();
+            $("#hotAnalysisDiv").hide();
+        });
+
+        // 显示热度分析相关内容
+        $("#hotAnalysis").click(function() {
+            $("#contentQueryDiv").hide();
+            $("#hotAnalysisDiv").show();
+        });
+
+        $("input:button#Text").click(function() {
+            var searchType = $("#searchType").val();
+            var searchText = $("input#searchText").val();
+            var sortType = $("#sortType").val();
+            var url = '/process_get?type=' + searchType + '&query=' + searchText + '&sort=' + sortType;
+
+            $.get(url, function(response) {
+                data = response; // 将获取的数据存储到 data 变量中
+                totalPages = Math.ceil(data.length / itemsPerPage);
+                currentPage = 1; // 重置当前页码为第一页
+                paginateData(); // 分页处理数据
+                updatePaginationInfo(); // 更新页码信息
+            });
+        });
+
+        function Drawer() {
+            var chart_data = []; // 存储作热度图的所有数据
+            var real_dates = []; // 存储热度图的横坐标，即日期
+            // 创建和配置 Echart 折线图
+            $.get('/process_get?type=content&query=' + $("input#searchHot").val(), function(response) {
+                chart_data = response; // 将获取的数据存储到 chart_data 变量中
+                var chartContainer = document.getElementById('chartContainer');
+                var myChart = echarts.init(chartContainer);
+                var dates = chart_data.map(item => item.publish_date);
+                for (var j = 0; j < dates.length; j++)
+                {
+                    dates[j] = dates[j].slice(0,10);
+                }
+                for (j = 0; j < dates.length; j++)
+                {
+                    if (real_dates.indexOf(dates[j]) === -1)
+                    {
+                        real_dates.push(dates[j]);
+                    }
+                }
+                var values = new Array(real_dates.length).fill(0);
+                for (var k = 0; k < real_dates.length; k++)
+                {
+                    for (j = 0; j < dates.length; j++)
+                    {
+                        if (dates[j] === real_dates[k])
+                            values[k]++;
+                    }
+                }
+                var word;
+                if ($("input#searchHot").val() === "")
+                {
+                    word = '新闻数量';
+                }
+                else
+                {
+                    word = '"' + $("input#searchHot").val() + '"一词';
+                }
+                var option = {
+                    title: {
+                        left: 'center',
+                        text: word + '的热度折线图'
+                    },
+                    xAxis: {
+                        type: 'category',
+                        data: real_dates,
+                        name: "Date",
+                        nameLocation: 'middle',
+                        nameTextStyle:{
+                            padding:10
+                        }
+                    },
+                    yAxis: {
+                        type: 'value',
+                        name: "Number",
+                        nameLocation: 'middle',
+                        nameTextStyle: {
+                            padding:15
+                        }
+                    },
+                    series: [
+                        {
+                            data: values,
+                            type: 'line',
+                            symbol: 'circle',
+                            symbolSize: 10,
+                            lineStyle: {
+                                color: '#5470C6',
+                                width: 4,
+                            },
+                            itemStyle: {
+                                borderWidth: 3,
+                                borderColor: '#EE6666',
+                                color: 'yellow'
+                            }
+                        }
+                    ]
+                };
+
+                // 渲染折线图
+                myChart.setOption(option);
+            });
+        }
+
+        $("input:button#Hot").click(function() {
+            Drawer();
+        });
+
+        $("#searchText").keypress(function(event) {
+            if (event.which === 13) { // 回车键的键码是13
+                event.preventDefault(); // 阻止回车键默认提交表单的行为
+                var searchType = $("#searchType").val();
+                var searchText = $("input#searchText").val();
+                var sortType = $("#sortType").val();
+                var url = '/process_get?type=' + searchType + '&query=' + searchText + '&sort=' + sortType;
+
+                $.get(url, function (response) {
+                    data = response; // 将获取的数据存储到 data 变量中
+                    totalPages = Math.ceil(data.length / itemsPerPage);
+                    currentPage = 1; // 重置当前页码为第一页
+                    paginateData(); // 分页处理数据
+                    updatePaginationInfo(); // 更新页码信息
+                });
+            }
+        });
+
+        $("#searchHot").keypress(function(event) {
+            if (event.which === 13) { // 回车键的键码是13
+                event.preventDefault(); // 阻止回车键默认提交表单的行为
+                Drawer();
+            }
+        });
+
+        // 翻页按钮点击事件
+        $("#prevPage").click(function() {
+            if (currentPage > 1) {
+                currentPage--;
+                paginateData();
+                updatePaginationInfo();
+            }
+        });
+
+        $("#nextPage").click(function() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                paginateData();
+                updatePaginationInfo();
+            }
+        });
+
+        $("input:button#Page").click(function() {
+            var page = parseInt($("input#searchPage").val());
+            if (page <= totalPages && page > 0) {
+                currentPage = page;
+                paginateData();
+                updatePaginationInfo();
+            }
+        });
+
+        function paginateData() {
+            $("#record2").empty();
+            $("#record2").append('<tr class="cardLayout"><td>新闻标题</td><td>新闻来源</td>' +
+                '<td>源地址</td><td>新闻作者</td><td>新闻日期</td></tr>');
+
+            var startIndex = (currentPage - 1) * itemsPerPage;
+            var endIndex = startIndex + itemsPerPage;
+            var paginatedData = data.slice(startIndex, endIndex);
+
+            for (let list of paginatedData) {
+                let table = '<tr class="cardLayout"><td>';
+                Object.values(list).forEach((element, index) => {
+                    if (index === 4) {
+                        element = element.slice(0,10);
+                        table += element;
+                    }
+                    else if (index === 2) {
+                        table += '<a href="' + element + '">查看详情</a>';
+                    }
+                    else {
+                        table += element;
+                    }
+                    table += '</td><td>';
+                });
+                $("#record2").append(table + '</td></tr>');
+            }
+        }
+
+        function updatePaginationInfo() {
+            var paginationInfo = "第" + currentPage + "页 / 共" + totalPages + "页";
+            $("#paginationInfo").text(paginationInfo);
+        }
+    });
+</script>
+</body>
+</html>
