@@ -14,6 +14,7 @@
 <nav>
     <ul class="navbar">
         <li><a href="#" id="contentQuery">内容查询</a></li>
+        <li><a href="#" id="complexQuery">复合查询</a></li>
         <li><a href="#" id="hotAnalysis">热度分析</a></li>
         <li><a href="#" id="wordCloud">词云展示</a></li>
     </ul>
@@ -59,13 +60,58 @@
     </div> <!-- 用于进行页码跳转 -->
 </div>
 
+<div id="complexQueryDiv" style="display: none;">
+    <form id="complexQueryForm">
+        <br>
+        <label for="searchText1">查询条件1：</label>
+        <input type="text" name="searchText1" id="searchText1">
+        <select id="searchType1">
+            <option value="title">新闻标题</option>
+            <option value="content">新闻内容</option>
+            <option value="keywords">新闻关键词</option>
+            <option value="author">新闻作者</option>
+        </select>
+        <br>
+        <label for="searchText2">查询条件2：</label>
+        <input type="text" name="searchText2" id="searchText2">
+        <select id="searchType2">
+            <option value="title">新闻标题</option>
+            <option value="content">新闻内容</option>
+            <option value="keywords">新闻关键词</option>
+            <option value="author">新闻作者</option>
+        </select>
+        <br>
+        <input class="form-submit" type="button" value="查询" id="Complex">
+    </form>
+    <div class="cardLayout" style="margin: 10px 0px">
+        <table width="100%" id="record1"></table>
+    </div>
+    <div class="button-container"> <!-- 翻页的按钮 -->
+        <button id="prevPage2" class="button">上一页</button>
+        <button id="nextPage2" class="button">下一页</button>
+    </div>
+    <div id="paginationInfo2"></div> <!-- 用于显示页码信息 -->
+    <div id="pageJump2">
+        <form id="pageTrans2">
+            <label>跳转至第</label>
+            <input type="text" name="page_text" id="searchPage2">
+            <label>页</label>
+            <input class="form-submit" type="button" value="跳转" id="Page2">
+        </form>
+    </div> <!-- 用于进行页码跳转 -->
+</div>
+
 <div id="hotAnalysisDiv">
     <form>
         <br><label>检索内容：</label><input type="text" name="title_text" id="searchHot">
         <input class="form-submit" type="button" value="热度" id="Hot">
     </form>
     <div id="chartContainerWrapper">
-        <div id="chartContainer"></div>
+        <div id="chartContainer">
+        </div>
+        <div id="infoMessageContainer">
+            <label id="infoMessage">*7月9日的新闻来源选择较少，故总新闻数较少。</label>
+        </div>
     </div>
 </div>
 
@@ -78,26 +124,38 @@
 <script>
     $(document).ready(function() {
         var currentPage = 1; // 当前页码
+        var currentPage2 = 1
         var itemsPerPage = 10; // 每页显示的条目数
         var data = []; // 存储查询时的所有数据
+        var data_2 = []
         var totalPages; // 页数的最大值
+        var totalPages2;
 
         // 显示内容查询相关内容
         $("#contentQuery").click(function() {
             $("#contentQueryDiv").show();
+            $("#complexQueryDiv").hide();
             $("#hotAnalysisDiv").hide();
             $("#wordCloudDiv").hide();
         });
 
+        $("#complexQuery").click(function() {
+            $("#contentQueryDiv").hide();
+            $("#hotAnalysisDiv").hide();
+            $("#wordCloudDiv").hide();
+            $("#complexQueryDiv").show();
+        });
         // 显示热度分析相关内容
         $("#hotAnalysis").click(function() {
             $("#contentQueryDiv").hide();
             $("#hotAnalysisDiv").show();
             $("#wordCloudDiv").hide();
+            $("#complexQueryDiv").hide();
         });
 
         $("#wordCloud").click(function() {
             $("#contentQueryDiv").hide();
+            $("#complexQueryDiv").hide();
             $("#hotAnalysisDiv").hide();
             $("#wordCloudDiv").show();
             var keywordsArray_original = [];
@@ -283,6 +341,23 @@
             Drawer();
         });
 
+        $("#Complex").click(function() {
+            var searchText1 = $("#searchText1").val();
+            var searchType1 = $("#searchType1").val();
+            var searchText2 = $("#searchText2").val();
+            var searchType2 = $("#searchType2").val();
+
+            var url = '/process_complex_query?type=complex&searchText1=' + searchText1 + '&searchType1=' + searchType1 + '&searchText2=' + searchText2 + '&searchType2=' + searchType2;
+
+            $.get(url, function(response) {
+                data_2 = response; // 将获取的数据存储到 data 变量中
+                totalPages2 = Math.ceil(data_2.length / itemsPerPage);
+                currentPage2 = 1; // 重置当前页码为第一页
+                paginateData2(); // 分页处理数据
+                updatePaginationInfo2(); // 更新页码信息
+            });
+        });
+
         $("#searchText").keypress(function(event) {
             if (event.which === 13) { // 回车键的键码是13
                 event.preventDefault(); // 阻止回车键默认提交表单的行为
@@ -337,12 +412,37 @@
             }
         });
 
+        $("#prevPage2").click(function() {
+            if (currentPage2 > 1) {
+                currentPage2--;
+                paginateData2();
+                updatePaginationInfo2();
+            }
+        });
+
+        $("#nextPage2").click(function() {
+            if (currentPage2 < totalPages2) {
+                currentPage2++;
+                paginateData2();
+                updatePaginationInfo2();
+            }
+        });
+
         $("input:button#Page").click(function() {
             var page = parseInt($("input#searchPage").val());
             if (page <= totalPages && page > 0) {
                 currentPage = page;
                 paginateData();
                 updatePaginationInfo();
+            }
+        });
+
+        $("input:button#Page2").click(function() {
+            var page = parseInt($("input#searchPage2").val());
+            if (page <= totalPages2 && page > 0) {
+                currentPage2 = page;
+                paginateData2();
+                updatePaginationInfo2();
             }
         });
 
@@ -377,6 +477,39 @@
         function updatePaginationInfo() {
             var paginationInfo = "第" + currentPage + "页 / 共" + totalPages + "页";
             $("#paginationInfo").text(paginationInfo);
+        }
+
+        function paginateData2() {
+            $("#record1").empty();
+            $("#record1").append('<tr class="cardLayout"><td>新闻标题</td><td>新闻来源</td>' +
+                '<td>源地址</td><td>新闻作者</td><td>新闻日期</td></tr>');
+
+            var startIndex2 = (currentPage2 - 1) * itemsPerPage;
+            var endIndex2 = startIndex2 + itemsPerPage;
+            var paginatedData2 = data_2.slice(startIndex2, endIndex2);
+
+            for (let list of paginatedData2) {
+                let table = '<tr class="cardLayout"><td>';
+                Object.values(list).forEach((element, index) => {
+                    if (index === 4) {
+                        element = element.slice(0,10);
+                        table += element;
+                    }
+                    else if (index === 2) {
+                        table += '<a href="' + element + '">查看详情</a>';
+                    }
+                    else if (index !== 5) {
+                        table += element;
+                    }
+                    table += '</td><td>';
+                });
+                $("#record1").append(table + '</td></tr>');
+            }
+        }
+
+        function updatePaginationInfo2() {
+            var paginationInfo2 = "第" + currentPage2 + "页 / 共" + totalPages2 + "页";
+            $("#paginationInfo2").text(paginationInfo2);
         }
     });
 </script>

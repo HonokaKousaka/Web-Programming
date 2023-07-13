@@ -34,6 +34,18 @@ input[id="searchText"] {
     border: 1px solid #ccc;
 }
 
+input[id="searchText1"] {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
+input[id="searchText2"] {
+    width: 300px;
+    padding: 10px;
+    border: 1px solid #ccc;
+}
+
 input[id="searchHot"] {
     width: 300px;
     padding: 10px;
@@ -41,6 +53,13 @@ input[id="searchHot"] {
 }
 
 input[id="searchPage"] {
+    font-family: "Times New Roman", serif;
+    width: 20px;
+    padding: 5px;
+    border: 1px solid #ccc;
+}
+
+input[id="searchPage2"] {
     font-family: "Times New Roman", serif;
     width: 20px;
     padding: 5px;
@@ -151,7 +170,20 @@ table td {
     margin-left: 10px;
 }
 
+#prevPage2 {
+    margin-right: 10px;
+}
+
+#nextPage2 {
+    margin-left: 10px;
+}
+
 #paginationInfo {
+    text-align: center;
+    margin-top: 5px;
+}
+
+#paginationInfo2 {
     text-align: center;
     margin-top: 5px;
 }
@@ -206,6 +238,7 @@ table td {
 
 #chartContainerWrapper {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 70vh;
@@ -242,6 +275,16 @@ table td {
     margin-left: 5px;
 }
 
+#Page2 {
+    padding: 5px 10px;
+    background-color: #666666;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
 #sortType {
     background-color: #66ccff;
     margin-right: 5px;
@@ -258,6 +301,38 @@ table td {
     background-color: #ddd;
 }
 
+#searchType1 {
+    background-color: #66ccff;
+    margin-right: 5px;
+    padding: 10px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#searchType1 option {
+    background-color: #f9f9f9;
+}
+
+#searchType1 option:hover {
+    background-color: #ddd;
+}
+
+#searchType2 {
+    background-color: #66ccff;
+    margin-right: 5px;
+    padding: 10px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+#searchType2 option {
+    background-color: #f9f9f9;
+}
+
+#searchType2 option:hover {
+    background-color: #ddd;
+}
+
 #wordCloudDrawing {
     width: 800px;
     height: 500px;
@@ -269,3 +344,9 @@ table td {
     align-items: center;
     height: 70vh;
 }
+
+#infoMessageContainer {
+    margin-top: 10px;
+    text-align: center;
+}
+
