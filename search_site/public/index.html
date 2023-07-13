@@ -5,6 +5,7 @@
     <title>新闻收集站</title>
     <script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <script src="./javascripts/echarts-wordcloud/dist/echarts-wordcloud.js"></script>
 </head>
 <header>
 </header>
@@ -14,7 +15,7 @@
     <ul class="navbar">
         <li><a href="#" id="contentQuery">内容查询</a></li>
         <li><a href="#" id="hotAnalysis">热度分析</a></li>
-        <li><a href="#" id="wordCloud">词云</a></li>
+        <li><a href="#" id="wordCloud">词云展示</a></li>
     </ul>
 </nav>
 
@@ -67,6 +68,11 @@
         <div id="chartContainer"></div>
     </div>
 </div>
+
+<div id="wordCloudDiv">
+    <div id="wordCloudWrapper">
+        <div id="wordCloudDrawing"></div>
+    </div>
 </div>
 
 <script>
@@ -80,12 +86,98 @@
         $("#contentQuery").click(function() {
             $("#contentQueryDiv").show();
             $("#hotAnalysisDiv").hide();
+            $("#wordCloudDiv").hide();
         });
 
         // 显示热度分析相关内容
         $("#hotAnalysis").click(function() {
             $("#contentQueryDiv").hide();
             $("#hotAnalysisDiv").show();
+            $("#wordCloudDiv").hide();
+        });
+
+        $("#wordCloud").click(function() {
+            $("#contentQueryDiv").hide();
+            $("#hotAnalysisDiv").hide();
+            $("#wordCloudDiv").show();
+            var keywordsArray_original = [];
+            var dataArray = [];
+            var allData = [];
+            var keywordsArray = [];
+            var url = '/process_get?type=title&query=&sort=date';
+            $.get(url, function(response) {
+                allData = response; // 将获取的数据存储到 allData 变量中
+                var dataNumber = allData.length;
+                for (var num = 0; num < dataNumber; num++)
+                {
+                    if (allData[num]['keywords'].indexOf(',') !== -1)
+                        allData[num]['keywords'] = allData[num]['keywords'].split(",");
+                    else if (allData[num]['keywords'].indexOf(';') !== -1)
+                        allData[num]['keywords'] = allData[num]['keywords'].split(";");
+                    else allData[num]['keywords'] = allData[num]['keywords'].split(" ");
+                    for (var array_num = 0; array_num < allData[num]['keywords'].length; array_num++)
+                    {
+                        if (allData[num]['keywords'][array_num] !== "")
+                        keywordsArray_original.push(allData[num]['keywords'][array_num]);
+                    }
+                }
+                for (num = 0; num < keywordsArray_original.length; num++)
+                {
+                    if (keywordsArray.indexOf(keywordsArray_original[num]) === -1)
+                        keywordsArray.push(keywordsArray_original[num]);
+                }
+                var frequencyArray = new Array(keywordsArray.length).fill(0);
+                for (num = 0; num < keywordsArray_original.length; num++)
+                {
+                    var cnt = keywordsArray.indexOf(keywordsArray_original[num]);
+                    frequencyArray[cnt]++;
+                }
+                for (num = 0; num < keywordsArray.length; num++)
+                {
+                    var name_value = {name: keywordsArray[num], value: frequencyArray[num]};
+                    dataArray.push(name_value);
+                }
+                dataArray = dataArray.sort((a, b) => b.value - a.value).slice(0,100);
+                console.log(dataArray);
+                var myChart = echarts.init(document.getElementById('wordCloudDrawing'));
+                // 指定图表的配置项和数据
+                option = {
+                    tooltip: {
+                        show: true
+                    },
+                    series: [
+                        {
+                            type: 'wordCloud', //词云图
+                            gridSize: 3, //词的间距
+                            shape: 'diamond', //词云形状，可选diamond，pentagon，circle，triangle，star等形状
+                            sizeRange: [18, 40], //词云大小范围
+                            width: 800, //词云显示宽度
+                            height: 500, //词云显示高度
+                            textStyle: {
+                                    color: function () {
+                                        //词云的颜色随机
+                                        return (
+                                            'rgb(' +
+                                            [
+                                                Math.round(Math.random() * 160),
+                                                Math.round(Math.random() * 160),
+                                                Math.round(Math.random() * 160)
+                                            ].join(',') +
+                                            ')'
+                                        );
+                                    },
+                                emphasis: {
+                                    shadowBlur: 10, //阴影的模糊等级
+                                    shadowColor: '#333' //鼠标悬停在词云上的阴影颜色
+                                }
+                            },
+                            data: dataArray
+                        }
+                    ]
+                };
+                // 使用刚指定的配置项和数据显示图表。
+                myChart.setOption(option, true);
+            });
         });
 
         $("input:button#Text").click(function() {
@@ -216,6 +308,18 @@
             }
         });
 
+        $("#searchPage").keypress(function(event) {
+            if (event.which === 13) { // 回车键的键码是13
+                event.preventDefault(); // 阻止回车键默认提交表单的行为
+                var page = parseInt($("input#searchPage").val());
+                if (page <= totalPages && page > 0) {
+                    currentPage = page;
+                    paginateData();
+                    updatePaginationInfo();
+                }
+            }
+        });
+
         // 翻页按钮点击事件
         $("#prevPage").click(function() {
             if (currentPage > 1) {
@@ -261,7 +365,7 @@
                     else if (index === 2) {
                         table += '<a href="' + element + '">查看详情</a>';
                     }
-                    else {
+                    else if (index !== 5) {
                         table += element;
                     }
                     table += '</td><td>';

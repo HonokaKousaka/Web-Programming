@@ -126,7 +126,6 @@ table td {
     margin-top: 20px;
 }
 
-
 .button {
     padding: 10px 20px;
     background-color: #ff9800;
@@ -205,7 +204,6 @@ table td {
     display: none;
 }
 
-
 #chartContainerWrapper {
     display: flex;
     justify-content: center;
@@ -258,4 +256,16 @@ table td {
 
 #sortType option:hover {
     background-color: #ddd;
+}
+
+#wordCloudDrawing {
+    width: 800px;
+    height: 500px;
+}
+
+#wordCloudWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
 }

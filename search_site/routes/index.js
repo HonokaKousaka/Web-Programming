@@ -12,7 +12,7 @@ router.get('/process_get', function(request, response) {
   var searchText = request.query.query;
   var sortType = request.query.sort;
 
-  var fetchSql = "SELECT title, source_name, url, author, publish_date FROM fetches WHERE ";
+  var fetchSql = "SELECT title, source_name, url, author, publish_date, keywords FROM fetches WHERE ";
 
   if (searchType === 'title') {
     fetchSql += "title LIKE '%" + searchText + "%'";
