@@ -579,16 +579,18 @@
                     if (index === 4) {
                         element = element.slice(0,10);
                         table += element;
+                        table += '</td>';
                     }
                     else if (index === 2) {
                         table += '<a href="' + element + '">查看详情</a>';
+                        table += '</td><td>';
                     }
-                    else if (index !== 5) {
+                    else if (index < 5) {
                         table += element;
+                        table += '</td><td>';
                     }
-                    table += '</td><td>';
                 });
-                $("#record2").append(table + '</td></tr>');
+                $("#record2").append(table + '</tr>');
             }
         }
 
@@ -614,16 +616,18 @@
                     if (index === 4) {
                         element = element.slice(0,10);
                         table += element;
+                        table += '</td>';
                     }
                     else if (index === 2) {
                         table += '<a href="' + element + '">查看详情</a>';
+                        table += '</td><td>';
                     }
-                    else if (index !== 5) {
+                    else if (index < 5) {
                         table += element;
+                        table += '</td><td>';
                     }
-                    table += '</td><td>';
                 });
-                $("#record1").append(table + '</td></tr>');
+                $("#record1").append(table + '</tr>');
             }
         }
 

@@ -6,97 +6,109 @@ body {
 
 /* 标题 */
 h1 {
-    text-align: center;
+    text-align: center;         /* 标题文本居中对齐 */
     color: #333;
 }
 
+/* 表单 */
 form {
     margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    display: flex;              /* 将所有子元素排列在一条水平线上 */
+    justify-content: center;    /* 在水平方向上将表单项居中对齐 */
+    align-items: center;        /* 在垂直方向上将表单项居中对齐 */
 }
 
+/* form 中的 <label> */
 form label {
-    flex: 0 0 auto;
+    flex: 0 0 auto; /* 弹性盒子不会在剩余空间中增长或缩小，宽度根据内容的大小自动调整 */
     text-align: right;
 }
 
+/* form 中的 type="text" 的 input */
 form input[type="text"] {
     flex: 0 0 auto;
     margin-left: 10px;
     margin-right: 10px;
 }
 
+/* 内容查询页面中的搜索框 */
 input[id="searchText"] {
     width: 300px;
-    padding: 10px;
+    padding: 10px;              /* 内边距 */
     border: 1px solid #ccc;
 }
 
+/* 复合查询页面中的搜索框1 */
 input[id="searchText1"] {
     width: 300px;
-    padding: 10px;
+    padding: 10px;              /* 内边距 */
     border: 1px solid #ccc;
 }
 
+/* 复合查询页面中的搜索框2 */
 input[id="searchText2"] {
     width: 300px;
-    padding: 10px;
+    padding: 10px;              /* 内边距 */
     border: 1px solid #ccc;
 }
 
+/* 热度分析页面中的搜索框 */
 input[id="searchHot"] {
     width: 300px;
-    padding: 10px;
+    padding: 10px;              /* 内边距 */
     border: 1px solid #ccc;
 }
 
+/* 内容查询页面的页码搜索框 */
 input[id="searchPage"] {
     font-family: "Times New Roman", serif;
     width: 20px;
-    padding: 5px;
+    padding: 5px;               /* 内边距 */
     border: 1px solid #ccc;
 }
 
+/* 复合查询页面的页码搜索框 */
 input[id="searchPage2"] {
     font-family: "Times New Roman", serif;
     width: 20px;
-    padding: 5px;
+    padding: 5px;               /* 内边距 */
     border: 1px solid #ccc;
 }
 
+/* 查询按钮 */
 input[value="查询"] {
     padding: 10px 20px;
     margin-right: 5px;
     background-color: #800080;
     color: white;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    border-radius: 4px;         /* 让按钮为圆角方框 */
+    cursor: pointer;            /* 当光标移动到按钮上方，光标变为指针状 */
 }
 
+/* 热度按钮 */
 input[value="热度"] {
     padding: 10px 20px;
     margin-right: 5px;
     background-color: #b87333;
     color: white;
     border: none;
-    border-radius: 4px;
-    cursor: pointer;
+    border-radius: 4px;         /* 让按钮为圆角方框 */
+    cursor: pointer;            /* 当光标移动到按钮上方，光标变为指针状 */
 }
 
-/* 表格样式 */
+/* 表格 */
 table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
 }
 
+/* 每隔一行的背景颜色为白色 */
 table tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-table th,
+/* 表格中的数据单元格 */
 table td {
     padding: 10px;
     text-align: left;
@@ -108,14 +120,6 @@ table td {
     border-radius: 4px;
     padding: 10px;
     margin-bottom: 10px;
-}
-
-.cardLayout:first-child {
-    margin-top: 0;
-}
-
-.cardLayout:last-child {
-    margin-bottom: 0;
 }
 
 /* 调整表格列宽度 */
@@ -139,7 +143,6 @@ table td {
     width: 10%;
 }
 
-/* 调整表格列宽度 */
 #record1 td:first-child {
     width: 60%;
 }
@@ -159,13 +162,14 @@ table td {
 #record1 td:nth-child(5) {
     width: 10%;
 }
-
+ /* 翻页按钮 */
 .button-container {
     display: flex;
     justify-content: center;
     margin-top: 20px;
 }
 
+/* 按钮 */
 .button {
     padding: 10px 20px;
     background-color: #ff9800;
@@ -175,14 +179,17 @@ table td {
     cursor: pointer;
 }
 
+/* 光标悬停在按钮上时的按钮 */
 .button:hover {
     background-color: #f57c00;
 }
 
+/* 光标点击在按钮上时的按钮 */
 .button:active {
     background-color: #e65100;
 }
 
+/* 上一页与下一页按钮 */
 #prevPage {
     margin-right: 10px;
 }
@@ -199,6 +206,7 @@ table td {
     margin-left: 10px;
 }
 
+/* 分页信息 */
 #paginationInfo {
     text-align: center;
     margin-top: 5px;
@@ -209,30 +217,39 @@ table td {
     margin-top: 5px;
 }
 
+/* 导航栏 */
 .navbar {
-    display: flex;
-    justify-content: center;
-    list-style-type: none;
+    display: flex;              /* 使导航项水平排列 */
+    justify-content: center;    /* 在水平方向上讲导航项居中对齐 */
+    list-style-type: none;      /* 没有列表样式 */
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow: hidden;           /* 内容溢出时的处理方式 */
     background-color: #f1f1f1;
 }
 
+/* 导航项的样式 */
 .navbar li {
     flex: 0 0 auto;
     text-align: center;
 }
 
+/* 导航项链接的样式 */
 .navbar li a {
-    display: block;
+    display: block;             /* 链接为块级元素 */
     color: #333;
     text-align: center;
     padding: 14px 16px;
-    text-decoration: none;
+    text-decoration: none;      /* 超链接文本无下划线 */
 }
 
+/* 每个导航项的边距 */
 .navbar li#contentQuery {
+    margin-right: auto;
+}
+
+.navbar li#complexQuery {
+    margin-left: auto;
     margin-right: auto;
 }
 
@@ -245,24 +262,28 @@ table td {
     margin-left: auto;
 }
 
+/* 光标在链接上的链接的背景颜色 */
 .navbar li a:hover {
     background-color: #ddd;
 }
 
+/* 先让contentQueryDiv出现 */
 #contentQueryDiv {
     display: block;
 }
 
+/* 先隐藏hotAnalysisDiv */
 #hotAnalysisDiv {
     display: none;
 }
 
+/* 图表容器 */
 #chartContainerWrapper {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 70vh;
+    flex-direction: column;         /* 元素沿垂直轴方向排列 */
+    justify-content: center;        /* 垂直方向上将元素居中对齐 */
+    align-items: center;            /* 水平方向上将元素居中对齐 */
+    height: 500px;
 }
 
 #chartContainer {
@@ -270,6 +291,7 @@ table td {
     height: 400px;
 }
 
+/* 下拉框 */
 #searchType {
     background-color: #66ccff;
     margin-right: 5px;
@@ -278,14 +300,17 @@ table td {
     cursor: pointer;
 }
 
+/* 下拉框选项 */
 #searchType option {
     background-color: #f9f9f9;
 }
 
+/* 光标悬停在下拉框选项时 */
 #searchType option:hover {
     background-color: #ddd;
 }
 
+/* 分页输入框 */
 #Page {
     padding: 5px 10px;
     background-color: #666666;
@@ -306,6 +331,7 @@ table td {
     margin-left: 5px;
 }
 
+/* 下拉框 */
 #sortType {
     background-color: #66ccff;
     margin-right: 5px;
@@ -314,14 +340,17 @@ table td {
     cursor: pointer;
 }
 
+/* 下拉框选项 */
 #sortType option {
     background-color: #f9f9f9;
 }
 
+/* 光标悬停在下拉框选项时 */
 #sortType option:hover {
     background-color: #ddd;
 }
 
+/* 下拉框 */
 #searchType1 {
     background-color: #66ccff;
     margin-right: 5px;
@@ -330,14 +359,17 @@ table td {
     cursor: pointer;
 }
 
+/* 下拉框选项 */
 #searchType1 option {
     background-color: #f9f9f9;
 }
 
+/* 光标悬停在下拉框选项时 */
 #searchType1 option:hover {
     background-color: #ddd;
 }
 
+/* 下拉框 */
 #searchType2 {
     background-color: #66ccff;
     margin-right: 5px;
@@ -346,14 +378,17 @@ table td {
     cursor: pointer;
 }
 
+/* 下拉框选项 */
 #searchType2 option {
     background-color: #f9f9f9;
 }
 
+/* 光标悬停在下拉框选项时 */
 #searchType2 option:hover {
     background-color: #ddd;
 }
 
+/* 词云 */
 #wordCloudDrawing {
     width: 800px;
     height: 500px;
@@ -363,9 +398,10 @@ table td {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 70vh;
+    height: 500px;
 }
 
+/* 热度分析的提示语 */
 #infoMessageContainer {
     margin-top: 10px;
     text-align: center;
