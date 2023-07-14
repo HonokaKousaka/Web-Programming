@@ -610,7 +610,7 @@
             var endIndex2 = startIndex2 + itemsPerPage;
             var paginatedData2 = data_2.slice(startIndex2, endIndex2);
 
-            for (let list of paginatedData2) {
+            for (let list of paginatedData) {
                 let table = '<tr class="cardLayout"><td>';
                 Object.values(list).forEach((element, index) => {
                     if (index === 4) {
