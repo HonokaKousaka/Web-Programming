@@ -39,8 +39,8 @@
             <option value="content">新闻内容</option>
             <option value="keywords">新闻关键词</option>
             <option value="author">新闻作者</option>
-            <!--下拉菜单，允许选择排序方式-->
         </select>
+        <!--下拉菜单，允许选择排序方式-->
         <label for="sortType"></label><select id="sortType">
             <option value="date">按时间排序</option>
             <option value="title">按标题排序</option>
@@ -245,13 +245,13 @@
                         {
                             type: 'wordCloud',          // 词云图
                             gridSize: 3,                // 词的间距
-                            shape: 'diamond',           //词云形状，可选diamond，pentagon，circle，triangle，star等形状
-                            sizeRange: [18, 40],        //词云大小范围
-                            width: 800,                 //词云显示宽度
-                            height: 500,                //词云显示高度
+                            shape: 'diamond',           // 词云形状，可选diamond，pentagon，circle，triangle，star等形状
+                            sizeRange: [18, 40],        // 词云大小范围
+                            width: 800,                 // 词云显示宽度
+                            height: 500,                // 词云显示高度
                             textStyle: {
                                     color: function () {
-                                        //词云的颜色随机
+                                        // 词云的颜色随机
                                         return (
                                             'rgb(' +
                                             [
@@ -263,8 +263,8 @@
                                         );
                                     },
                                 emphasis: {
-                                    shadowBlur: 10,         //阴影的模糊等级
-                                    shadowColor: '#333'     //鼠标悬停在词云上的阴影颜色
+                                    shadowBlur: 10,         // 阴影的模糊等级
+                                    shadowColor: '#333'     // 鼠标悬停在词云上的阴影颜色
                                 }
                             },
                             data: dataArray
@@ -316,6 +316,12 @@
                         real_dates.push(dates[j]);
                     }
                 }
+                function compareDates(date1, date2) {
+                    var dateObj1 = new Date(date1);
+                    var dateObj2 = new Date(date2);
+                    return dateObj1 - dateObj2;
+                }
+                real_dates.sort(compareDates);
                 // 生成一个记录每天新闻数量的数组，这里将其中的每个元素都置为0
                 var values = new Array(real_dates.length).fill(0);
                 for (var k = 0; k < real_dates.length; k++)
@@ -367,12 +373,12 @@
                             symbolSize: 10,
                             lineStyle: {
                                 color: '#5470C6',
-                                width: 4,
+                                width: 3,
                             },
                             itemStyle: {
                                 borderWidth: 3,
                                 borderColor: '#EE6666',
-                                color: 'yellow'
+                                color: '#EE6666'
                             }
                         }
                     ]
@@ -421,6 +427,47 @@
                     currentPage = 1;            // 重置当前页码为第一页
                     paginateData();             // 分页处理数据
                     updatePaginationInfo();     // 更新页码信息
+                });
+            }
+        });
+
+        $("#searchText1").keypress(function(event) {
+            if (event.which === 13) {           // 回车键的键码是13
+                console.log(1);
+                event.preventDefault();         // 阻止回车键默认提交表单的行为
+                var searchText1 = $("#searchText1").val();
+                var searchType1 = $("#searchType1").val();
+                var searchText2 = $("#searchText2").val();
+                var searchType2 = $("#searchType2").val();
+
+                var url = '/process_complex_query?type=complex&searchText1=' + searchText1 + '&searchType1=' + searchType1 + '&searchText2=' + searchText2 + '&searchType2=' + searchType2;
+
+                $.get(url, function(response) {
+                    data_2 = response;          // 将获取的数据存储到 data_2 中
+                    totalPages2 = Math.ceil(data_2.length / itemsPerPage);
+                    currentPage2 = 1;           // 重置当前页码为第一页
+                    paginateData2();            // 分页处理数据
+                    updatePaginationInfo2();    // 更新页码信息
+                });
+            }
+        });
+
+        $("#searchText2").keypress(function(event) {
+            if (event.which === 13) {           // 回车键的键码是13
+                event.preventDefault();         // 阻止回车键默认提交表单的行为
+                var searchText1 = $("#searchText1").val();
+                var searchType1 = $("#searchType1").val();
+                var searchText2 = $("#searchText2").val();
+                var searchType2 = $("#searchType2").val();
+
+                var url = '/process_complex_query?type=complex&searchText1=' + searchText1 + '&searchType1=' + searchType1 + '&searchText2=' + searchText2 + '&searchType2=' + searchType2;
+
+                $.get(url, function(response) {
+                    data_2 = response;          // 将获取的数据存储到 data_2 中
+                    totalPages2 = Math.ceil(data_2.length / itemsPerPage);
+                    currentPage2 = 1;           // 重置当前页码为第一页
+                    paginateData2();            // 分页处理数据
+                    updatePaginationInfo2();    // 更新页码信息
                 });
             }
         });
