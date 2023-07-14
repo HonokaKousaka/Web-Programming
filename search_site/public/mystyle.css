@@ -120,23 +120,44 @@ table td {
 
 /* 调整表格列宽度 */
 #record2 td:first-child {
-    width: 40%;
+    width: 60%;
 }
 
 #record2 td:nth-child(2) {
-    width: 15%;
+    width: 10%;
 }
 
 #record2 td:nth-child(3) {
-    width: 15%;
+    width: 10%;
 }
 
 #record2 td:nth-child(4) {
-    width: 15%;
+    width: 10%;
 }
 
 #record2 td:nth-child(5) {
-    width: 15%;
+    width: 10%;
+}
+
+/* 调整表格列宽度 */
+#record1 td:first-child {
+    width: 60%;
+}
+
+#record1 td:nth-child(2) {
+    width: 10%;
+}
+
+#record1 td:nth-child(3) {
+    width: 10%;
+}
+
+#record1 td:nth-child(4) {
+    width: 10%;
+}
+
+#record1 td:nth-child(5) {
+    width: 10%;
 }
 
 .button-container {

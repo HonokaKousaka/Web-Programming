@@ -11,6 +11,7 @@
 </header>
 
 <body>
+<!--导航栏-->
 <nav>
     <ul class="navbar">
         <li><a href="#" id="contentQuery">内容查询</a></li>
@@ -24,16 +25,21 @@
     新闻收集站
 </h1>
 
+<!--内容查询-->
 <div id="contentQueryDiv">
+    <!--表单-->
     <form id="content">
         <br>
         <label for="searchText">检索内容：</label>
+        <!--搜索框-->
         <input type="text" name="title_text" id="searchText">
+        <!--下拉菜单，允许选择查询条件-->
         <select id="searchType">
             <option value="title">新闻标题</option>
             <option value="content">新闻内容</option>
             <option value="keywords">新闻关键词</option>
             <option value="author">新闻作者</option>
+            <!--下拉菜单，允许选择排序方式-->
         </select>
         <label for="sortType"></label><select id="sortType">
             <option value="date">按时间排序</option>
@@ -42,14 +48,18 @@
         </select>
         <input class="form-submit" type="button" value="查询" id="Text">
     </form>
-    <div class="cardLayout" style="margin: 10px 0px">
+    <!--表格-->
+    <div class="cardLayout" style="margin: 10px 0">
         <table width="100%" id="record2"></table>
     </div>
-    <div class="button-container"> <!-- 翻页的按钮 -->
+    <!--翻页按钮-->
+    <div class="button-container">
         <button id="prevPage" class="button">上一页</button>
         <button id="nextPage" class="button">下一页</button>
     </div>
-    <div id="paginationInfo"></div> <!-- 用于显示页码信息 -->
+    <!--用于显示页码信息-->
+    <div id="paginationInfo"></div>
+    <!--用于进行页码跳转-->
     <div id="pageJump">
         <form id="pageTrans">
             <label>跳转至第</label>
@@ -57,14 +67,18 @@
             <label>页</label>
             <input class="form-submit" type="button" value="跳转" id="Page">
         </form>
-    </div> <!-- 用于进行页码跳转 -->
+    </div>
 </div>
 
+<!--复合查询-->
 <div id="complexQueryDiv" style="display: none;">
+    <!--表单-->
     <form id="complexQueryForm">
         <br>
         <label for="searchText1">查询条件1：</label>
+        <!--搜索框-->
         <input type="text" name="searchText1" id="searchText1">
+        <!--下拉菜单，允许选择查询条件1-->
         <select id="searchType1">
             <option value="title">新闻标题</option>
             <option value="content">新闻内容</option>
@@ -74,6 +88,7 @@
         <br>
         <label for="searchText2">查询条件2：</label>
         <input type="text" name="searchText2" id="searchText2">
+        <!--下拉菜单，允许选择查询条件2-->
         <select id="searchType2">
             <option value="title">新闻标题</option>
             <option value="content">新闻内容</option>
@@ -83,14 +98,18 @@
         <br>
         <input class="form-submit" type="button" value="查询" id="Complex">
     </form>
+    <!--表格-->
     <div class="cardLayout" style="margin: 10px 0px">
         <table width="100%" id="record1"></table>
     </div>
-    <div class="button-container"> <!-- 翻页的按钮 -->
+    <!--翻页按钮-->
+    <div class="button-container">
         <button id="prevPage2" class="button">上一页</button>
         <button id="nextPage2" class="button">下一页</button>
     </div>
-    <div id="paginationInfo2"></div> <!-- 用于显示页码信息 -->
+    <!--用于显示页码信息-->
+    <div id="paginationInfo2"></div>
+    <!--用于进行页码跳转-->
     <div id="pageJump2">
         <form id="pageTrans2">
             <label>跳转至第</label>
@@ -98,15 +117,19 @@
             <label>页</label>
             <input class="form-submit" type="button" value="跳转" id="Page2">
         </form>
-    </div> <!-- 用于进行页码跳转 -->
+    </div>
 </div>
 
+<!--热度分析-->
 <div id="hotAnalysisDiv">
+    <!--表单-->
     <form>
         <br><label>检索内容：</label><input type="text" name="title_text" id="searchHot">
         <input class="form-submit" type="button" value="热度" id="Hot">
     </form>
+    <!--便于限定 chartContainer 的位置，进行美观处理-->
     <div id="chartContainerWrapper">
+        <!--图表区域-->
         <div id="chartContainer">
         </div>
         <div id="infoMessageContainer">
@@ -115,23 +138,26 @@
     </div>
 </div>
 
+<!--词云展示-->
 <div id="wordCloudDiv">
+    <!--便于限定 wordCloudDrawing 的位置，进行美观处理-->
     <div id="wordCloudWrapper">
         <div id="wordCloudDrawing"></div>
     </div>
 </div>
 
+<!--Javascript 后端-->
 <script>
     $(document).ready(function() {
-        var currentPage = 1; // 当前页码
-        var currentPage2 = 1
-        var itemsPerPage = 10; // 每页显示的条目数
-        var data = []; // 存储查询时的所有数据
-        var data_2 = []
-        var totalPages; // 页数的最大值
-        var totalPages2;
+        var currentPage = 1;        // 内容查询页面使用的当前页码
+        var currentPage2 = 1;       // 复合查询页面使用的当前页码
+        var itemsPerPage = 10;      // 每页显示的条目数
+        var data = [];              // 存储内容查询时的所有数据
+        var data_2 = []             // 存储复合查询时的所有数据
+        var totalPages;             // 内容查询页面页数的最大值
+        var totalPages2;            // 复合查询页面页数的最大值
 
-        // 显示内容查询相关内容
+        // 显示且仅显示内容查询相关内容
         $("#contentQuery").click(function() {
             $("#contentQueryDiv").show();
             $("#complexQueryDiv").hide();
@@ -139,13 +165,15 @@
             $("#wordCloudDiv").hide();
         });
 
+        // 显示且仅显示复合查询相关内容
         $("#complexQuery").click(function() {
             $("#contentQueryDiv").hide();
             $("#hotAnalysisDiv").hide();
             $("#wordCloudDiv").hide();
             $("#complexQueryDiv").show();
         });
-        // 显示热度分析相关内容
+
+        // 显示且仅显示热度分析相关内容
         $("#hotAnalysis").click(function() {
             $("#contentQueryDiv").hide();
             $("#hotAnalysisDiv").show();
@@ -153,50 +181,60 @@
             $("#complexQueryDiv").hide();
         });
 
+        // 显示且仅显示词云展示相关内容，并且直接绘制词云
         $("#wordCloud").click(function() {
             $("#contentQueryDiv").hide();
             $("#complexQueryDiv").hide();
             $("#hotAnalysisDiv").hide();
             $("#wordCloudDiv").show();
-            var keywordsArray_original = [];
-            var dataArray = [];
-            var allData = [];
-            var keywordsArray = [];
-            var url = '/process_get?type=title&query=&sort=date';
+            var keywordsArray_original = [];        // 原始的所有关键词数据，即使重复也存储
+            var dataArray = [];                     // 最终被使用的数据，每个元素都是 {name:..., value:...} 的对象
+            var allData = [];                       // 所有数据
+            var keywordsArray = [];                 // 互斥的关键词数据
+            var url = '/process_get?type=title&query=&sort=date';   // 发起检索使用的url
             $.get(url, function(response) {
-                allData = response; // 将获取的数据存储到 allData 变量中
+                allData = response;                 // 将获取的数据存储到 allData 中
                 var dataNumber = allData.length;
                 for (var num = 0; num < dataNumber; num++)
                 {
+                    /* 不同的新闻有不同的关键词标注格式
+                    *  分别对使用逗号、分号、空格的分割方式进行处理 */
                     if (allData[num]['keywords'].indexOf(',') !== -1)
                         allData[num]['keywords'] = allData[num]['keywords'].split(",");
                     else if (allData[num]['keywords'].indexOf(';') !== -1)
                         allData[num]['keywords'] = allData[num]['keywords'].split(";");
                     else allData[num]['keywords'] = allData[num]['keywords'].split(" ");
+                    // 将关键词加入 keywordsArray_original 数组，这里将空关键词删去
                     for (var array_num = 0; array_num < allData[num]['keywords'].length; array_num++)
                     {
                         if (allData[num]['keywords'][array_num] !== "")
                         keywordsArray_original.push(allData[num]['keywords'][array_num]);
                     }
                 }
+                // 筛选互异的关键词加入 keywordsArray 数组
                 for (num = 0; num < keywordsArray_original.length; num++)
                 {
                     if (keywordsArray.indexOf(keywordsArray_original[num]) === -1)
                         keywordsArray.push(keywordsArray_original[num]);
                 }
+                // 生成一个记录每个关键词出现频率的数组，这里将其中的每个元素都置为0
                 var frequencyArray = new Array(keywordsArray.length).fill(0);
+                // 记录每个关键词出现的频率
                 for (num = 0; num < keywordsArray_original.length; num++)
                 {
                     var cnt = keywordsArray.indexOf(keywordsArray_original[num]);
                     frequencyArray[cnt]++;
                 }
+                /* 对每个关键词生成一个形如 {name:..., value:...} 的对象
+                *  其中，name 是关键词，value 是其出现频率 */
                 for (num = 0; num < keywordsArray.length; num++)
                 {
                     var name_value = {name: keywordsArray[num], value: frequencyArray[num]};
                     dataArray.push(name_value);
                 }
+                // 让对象基于关键词的出现频率从高到低排序
                 dataArray = dataArray.sort((a, b) => b.value - a.value).slice(0,100);
-                console.log(dataArray);
+                // 绘制云图
                 var myChart = echarts.init(document.getElementById('wordCloudDrawing'));
                 // 指定图表的配置项和数据
                 option = {
@@ -205,12 +243,12 @@
                     },
                     series: [
                         {
-                            type: 'wordCloud', //词云图
-                            gridSize: 3, //词的间距
-                            shape: 'diamond', //词云形状，可选diamond，pentagon，circle，triangle，star等形状
-                            sizeRange: [18, 40], //词云大小范围
-                            width: 800, //词云显示宽度
-                            height: 500, //词云显示高度
+                            type: 'wordCloud',          // 词云图
+                            gridSize: 3,                // 词的间距
+                            shape: 'diamond',           //词云形状，可选diamond，pentagon，circle，triangle，star等形状
+                            sizeRange: [18, 40],        //词云大小范围
+                            width: 800,                 //词云显示宽度
+                            height: 500,                //词云显示高度
                             textStyle: {
                                     color: function () {
                                         //词云的颜色随机
@@ -225,19 +263,20 @@
                                         );
                                     },
                                 emphasis: {
-                                    shadowBlur: 10, //阴影的模糊等级
-                                    shadowColor: '#333' //鼠标悬停在词云上的阴影颜色
+                                    shadowBlur: 10,         //阴影的模糊等级
+                                    shadowColor: '#333'     //鼠标悬停在词云上的阴影颜色
                                 }
                             },
                             data: dataArray
                         }
                     ]
                 };
-                // 使用刚指定的配置项和数据显示图表。
+                // 使用刚指定的配置项和数据显示图表
                 myChart.setOption(option, true);
             });
         });
 
+        // 点击内容查询页面的“查询”按钮，进行搜索与显示
         $("input:button#Text").click(function() {
             var searchType = $("#searchType").val();
             var searchText = $("input#searchText").val();
@@ -245,27 +284,31 @@
             var url = '/process_get?type=' + searchType + '&query=' + searchText + '&sort=' + sortType;
 
             $.get(url, function(response) {
-                data = response; // 将获取的数据存储到 data 变量中
+                data = response;            // 将获取的数据存储到 data 变量中
                 totalPages = Math.ceil(data.length / itemsPerPage);
-                currentPage = 1; // 重置当前页码为第一页
-                paginateData(); // 分页处理数据
-                updatePaginationInfo(); // 更新页码信息
+                currentPage = 1;            // 重置当前页码为第一页
+                paginateData();             // 分页处理数据
+                updatePaginationInfo();     // 更新页码信息
             });
         });
 
+        // 绘制热度分析图表
         function Drawer() {
-            var chart_data = []; // 存储作热度图的所有数据
-            var real_dates = []; // 存储热度图的横坐标，即日期
+            var chart_data = [];        // 存储作热度图的所有数据
+            var real_dates = [];        // 存储热度图的横坐标，即日期
             // 创建和配置 Echart 折线图
+            // 如果新闻内容里有该词，就获取该新闻
             $.get('/process_get?type=content&query=' + $("input#searchHot").val(), function(response) {
-                chart_data = response; // 将获取的数据存储到 chart_data 变量中
+                chart_data = response;  // 将获取的数据存储到 chart_data 中
                 var chartContainer = document.getElementById('chartContainer');
                 var myChart = echarts.init(chartContainer);
-                var dates = chart_data.map(item => item.publish_date);
+                var dates = chart_data.map(item => item.publish_date);  // 获取所有的时间，置于 dates 数组中
+                // 切片，取得 YYYY-MM-DD 格式的时间
                 for (var j = 0; j < dates.length; j++)
                 {
                     dates[j] = dates[j].slice(0,10);
                 }
+                // 筛选互异的时间信息，加入 real_dates 数组
                 for (j = 0; j < dates.length; j++)
                 {
                     if (real_dates.indexOf(dates[j]) === -1)
@@ -273,6 +316,7 @@
                         real_dates.push(dates[j]);
                     }
                 }
+                // 生成一个记录每天新闻数量的数组，这里将其中的每个元素都置为0
                 var values = new Array(real_dates.length).fill(0);
                 for (var k = 0; k < real_dates.length; k++)
                 {
@@ -282,6 +326,8 @@
                             values[k]++;
                     }
                 }
+                /* 假如搜索框为空，则显示所有新闻数量的热度分析图
+                *  假如搜索框不为空，则显示搜索框内容的热度分析图 */
                 var word;
                 if ($("input#searchHot").val() === "")
                 {
@@ -337,10 +383,12 @@
             });
         }
 
+        // 点击热度分析页面的“热度”按钮，进行热度分析题的绘制
         $("input:button#Hot").click(function() {
             Drawer();
         });
 
+        // 点击热度复合查询的“查询”按钮，进行复合搜索和显示
         $("#Complex").click(function() {
             var searchText1 = $("#searchText1").val();
             var searchType1 = $("#searchType1").val();
@@ -350,42 +398,45 @@
             var url = '/process_complex_query?type=complex&searchText1=' + searchText1 + '&searchType1=' + searchType1 + '&searchText2=' + searchText2 + '&searchType2=' + searchType2;
 
             $.get(url, function(response) {
-                data_2 = response; // 将获取的数据存储到 data 变量中
+                data_2 = response;          // 将获取的数据存储到 data_2 中
                 totalPages2 = Math.ceil(data_2.length / itemsPerPage);
-                currentPage2 = 1; // 重置当前页码为第一页
-                paginateData2(); // 分页处理数据
-                updatePaginationInfo2(); // 更新页码信息
+                currentPage2 = 1;           // 重置当前页码为第一页
+                paginateData2();            // 分页处理数据
+                updatePaginationInfo2();    // 更新页码信息
             });
         });
 
+        // 在内容查询页面的搜索框按下回车，也可以进行搜索与显示
         $("#searchText").keypress(function(event) {
-            if (event.which === 13) { // 回车键的键码是13
-                event.preventDefault(); // 阻止回车键默认提交表单的行为
+            if (event.which === 13) {           // 回车键的键码是13
+                event.preventDefault();         // 阻止回车键默认提交表单的行为
                 var searchType = $("#searchType").val();
                 var searchText = $("input#searchText").val();
                 var sortType = $("#sortType").val();
                 var url = '/process_get?type=' + searchType + '&query=' + searchText + '&sort=' + sortType;
 
                 $.get(url, function (response) {
-                    data = response; // 将获取的数据存储到 data 变量中
+                    data = response;            // 将获取的数据存储到 data 变量中
                     totalPages = Math.ceil(data.length / itemsPerPage);
-                    currentPage = 1; // 重置当前页码为第一页
-                    paginateData(); // 分页处理数据
-                    updatePaginationInfo(); // 更新页码信息
+                    currentPage = 1;            // 重置当前页码为第一页
+                    paginateData();             // 分页处理数据
+                    updatePaginationInfo();     // 更新页码信息
                 });
             }
         });
 
+        // 在热度分析页面的搜索框按下回车，也可以进行热度分析图的绘制
         $("#searchHot").keypress(function(event) {
-            if (event.which === 13) { // 回车键的键码是13
-                event.preventDefault(); // 阻止回车键默认提交表单的行为
+            if (event.which === 13) {           // 回车键的键码是13
+                event.preventDefault();         // 阻止回车键默认提交表单的行为
                 Drawer();
             }
         });
 
+        // 在内容查询页面的页面跳转的搜索框按下回车，也可以进行页面跳转
         $("#searchPage").keypress(function(event) {
-            if (event.which === 13) { // 回车键的键码是13
-                event.preventDefault(); // 阻止回车键默认提交表单的行为
+            if (event.which === 13) {           // 回车键的键码是13
+                event.preventDefault();         // 阻止回车键默认提交表单的行为
                 var page = parseInt($("input#searchPage").val());
                 if (page <= totalPages && page > 0) {
                     currentPage = page;
@@ -395,7 +446,20 @@
             }
         });
 
-        // 翻页按钮点击事件
+        // 在复合查询页面的页面跳转的搜索框按下回车，也可以进行页面跳转
+        $("#searchPage2").keypress(function(event) {
+            if (event.which === 13) {           // 回车键的键码是13
+                event.preventDefault();         // 阻止回车键默认提交表单的行为
+                var page2 = parseInt($("input#searchPage2").val());
+                if (page2 <= totalPages2 && page2 > 0) {
+                    currentPage2 = page2;
+                    paginateData2();
+                    updatePaginationInfo2();
+                }
+            }
+        });
+
+        // 内容查询页面上一页按钮点击事件
         $("#prevPage").click(function() {
             if (currentPage > 1) {
                 currentPage--;
@@ -404,6 +468,7 @@
             }
         });
 
+        // 内容查询页面下一页按钮点击事件
         $("#nextPage").click(function() {
             if (currentPage < totalPages) {
                 currentPage++;
@@ -412,6 +477,7 @@
             }
         });
 
+        // 复合查询页面上一页按钮点击事件
         $("#prevPage2").click(function() {
             if (currentPage2 > 1) {
                 currentPage2--;
@@ -420,6 +486,7 @@
             }
         });
 
+        // 复合查询页面下一页按钮点击事件
         $("#nextPage2").click(function() {
             if (currentPage2 < totalPages2) {
                 currentPage2++;
@@ -428,6 +495,7 @@
             }
         });
 
+        // 内容查询页面的跳转按钮点击事件
         $("input:button#Page").click(function() {
             var page = parseInt($("input#searchPage").val());
             if (page <= totalPages && page > 0) {
@@ -437,6 +505,7 @@
             }
         });
 
+        // 复合查询页面的跳转按钮点击事件
         $("input:button#Page2").click(function() {
             var page = parseInt($("input#searchPage2").val());
             if (page <= totalPages2 && page > 0) {
@@ -446,6 +515,7 @@
             }
         });
 
+        // 内容查询页面的表格处理
         function paginateData() {
             $("#record2").empty();
             $("#record2").append('<tr class="cardLayout"><td>新闻标题</td><td>新闻来源</td>' +
@@ -474,11 +544,13 @@
             }
         }
 
+        // 内容查询页面的页码显示
         function updatePaginationInfo() {
             var paginationInfo = "第" + currentPage + "页 / 共" + totalPages + "页";
             $("#paginationInfo").text(paginationInfo);
         }
 
+        // 复合查询页面的表格处理
         function paginateData2() {
             $("#record1").empty();
             $("#record1").append('<tr class="cardLayout"><td>新闻标题</td><td>新闻来源</td>' +
@@ -507,6 +579,7 @@
             }
         }
 
+        // 复合查询页面的页码显示
         function updatePaginationInfo2() {
             var paginationInfo2 = "第" + currentPage2 + "页 / 共" + totalPages2 + "页";
             $("#paginationInfo2").text(paginationInfo2);
