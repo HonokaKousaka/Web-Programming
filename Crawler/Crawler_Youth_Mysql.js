@@ -48,8 +48,8 @@ function request(url, callback) {
 }
 
 var rule = new schedule.RecurrenceRule();
-var times = [8, 10, 12, 14, 16, 18, 20, 22];
-var times2 = 30;
+var times = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
+var times2 = [0, 30];
 rule.hour = times;
 rule.minute = times2;
 
