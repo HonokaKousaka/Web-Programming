@@ -14,6 +14,7 @@ router.get('/process_get', function(request, response) {
 
   var fetchSql = "SELECT title, source_name, url, publish_date, keywords FROM ecnu WHERE ";
 
+  // 添加查询类型
   if (searchType === 'title') {
     fetchSql += "title LIKE '%" + searchText + "%'";
   } else if (searchType === 'content') {
@@ -44,7 +45,7 @@ router.get('/process_complex_query', function(request, response) {
   var searchText2 = request.query.searchText2;
   var searchType2 = request.query.searchType2;
 
-  // 构造查询语句
+  // 构造复合查询语句
   var fetchSql = "SELECT title, source_name, url, publish_date, keywords FROM ecnu WHERE ";
   fetchSql += searchType1 + " LIKE '%" + searchText1 + "%' AND " + searchType2 + " LIKE '%" + searchText2 + "%'";
 
