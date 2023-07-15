@@ -270,6 +270,14 @@ table td {
     display: none;
 }
 
+#complexQueryDiv {
+    display: none;
+}
+
+#wordCloudDiv {
+    display: none;
+}
+
 /* 图表容器 */
 #chartContainerWrapper {
     display: flex;
