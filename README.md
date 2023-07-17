@@ -15,6 +15,9 @@ github: https://github.com/HonokaKousaka/Web-Programming
 
 &emsp;&emsp;**每个重要的代码文件中都会有详尽的注释。**
 
+## 网页演示.mp4
+&emsp;&emsp;**具体展示了网页各功能的使用。** 如果想要知道网页最后的完成效果与功能，以及试图复现网页中的功能，可以观看该视频。
+
 ## Crawler
 ### Crawler_ECNU_Mysql.js
 &emsp;&emsp;实现了对华东师范大学“新闻热点”栏目 ( URL: https://www.ecnu.edu.cn/xwlm/xwrd.htm ) 近2个月的新闻爬取。这些数据被置入 MySQL 数据库中的 ecnu 表中。**华东师范大学“新闻热点”栏目的新闻是需要翻页浏览的，因此该代码对这个特点进行了特殊的处理：考虑了华东师范大学“新闻热点”栏目的 URL 的风格，实现了对连续多页数据的爬取。**
