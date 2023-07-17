@@ -10,6 +10,7 @@ h1 {
     color: #333;
 }
 
+/* 主页引导 */
 #mainDiv {
     display: flex;
     flex-direction: column;
@@ -19,12 +20,14 @@ h1 {
     text-align: center;
 }
 
+/* 主页引导文字 */
 #mainText {
     width: 70%;
     margin: 0 auto;
     text-align: left;
 }
 
+/* 主页引导图片 */
 #Ame {
     display: block;
     margin: 0 auto;
