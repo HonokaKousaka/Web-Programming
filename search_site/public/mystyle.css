@@ -292,6 +292,7 @@ table td {
     background-color: #ddd;
 }
 
+/* 先显示mainDiv */
 #mainDiv {
     display: block;
 }
@@ -306,10 +307,12 @@ table td {
     display: none;
 }
 
+/* 先隐藏complexQueryDiv */
 #complexQueryDiv {
     display: none;
 }
 
+/* 先隐藏wordCloudDiv */
 #wordCloudDiv {
     display: none;
 }
