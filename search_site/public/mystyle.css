@@ -10,6 +10,28 @@ h1 {
     color: #333;
 }
 
+#mainDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    text-align: center;
+}
+
+#mainText {
+    width: 70%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+#Ame {
+    display: block;
+    margin: 0 auto;
+    height: 350px;
+    width: auto;
+}
+
 /* 表单 */
 form {
     margin-bottom: 20px;
@@ -267,9 +289,13 @@ table td {
     background-color: #ddd;
 }
 
-/* 先让contentQueryDiv出现 */
-#contentQueryDiv {
+#mainDiv {
     display: block;
+}
+
+/* 先隐藏contentQueryDiv */
+#contentQueryDiv {
+    display: none;
 }
 
 /* 先隐藏hotAnalysisDiv */
