@@ -1,23 +1,21 @@
-var source_name = "澎湃新闻";   
-var seedURL = 'https://www.thepaper.cn/';  
-var myEncoding = "utf-8";   
+// 爬取的新闻网网址
+var source_name = "澎湃新闻";
+var seedURL = 'https://www.thepaper.cn/';
+var myEncoding = "utf-8";
 
-// 寻找新闻页面
+// cheerio选择器
 var seedURL_format = "$('a')";
-// 关键字内容格式: <meta name="keywords" content="">
-// 需要注意双引号的转译
 var keywords_format = "$('meta[property=\"keywords\"]').eq(0).attr(\"content\")";
 var title_format = "$('title').text()";
-// 日期与时间格式
 var date_format = "$('.ant-space-item').text()";
-// 作者格式: <meta name="author" content="">
-//var author_format = "$('.index_left__LfzyH')";
-// 文章主体内容
 var content_format = "$('.index_cententWrap__Jv8jK').text()";
 var source_format = "$('.post_info a').text()";
+
+// 正则表达式
 var url_reg = /\/newsDetail_forward_[0-9]{8}$/;
 var regExp = /\d{4}-\d{2}-\d{2}/;
 
+// 添加必要模块
 var fs = require('fs');
 var myRequest = require('request');
 var myCheerio = require('cheerio');
@@ -26,9 +24,6 @@ var mysql = require('./mysql.js');
 var schedule = require('node-schedule');
 require('date-utils');
 
-/**
- * 构造模仿浏览器的request是每个爬虫都包含的一部分
- */
 // 防止网站屏蔽爬虫
 var headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36 Edg/114.0.1823.67'
@@ -49,6 +44,7 @@ function request(url, callback) {
     myRequest(options, callback)
 }
 
+// 定时爬虫
 var rule = new schedule.RecurrenceRule();
 var times = [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
 var times2 = [0, 30];
@@ -59,16 +55,14 @@ schedule.scheduleJob(rule, function() {
     seedget();
 })
 
-/**
- * 读取种子页面
- */
+// 读取种子页面
 function seedget() {
     request(seedURL, function (err, res, body) {
         try {
-            //用iconv转换编码
+            // 用iconv转换编码
             var html = myIconv.decode(body, myEncoding);
             //console.log(html);
-            //准备用cheerio解析html
+            // 准备用cheerio解析html
             var $ = myCheerio.load(html, {decodeEntities: true});
         } catch (e) {
             console.log('读种子页面并转码出错：' + e)
@@ -85,9 +79,6 @@ function seedget() {
             console.log('url列表所处的html识别出错: ' + e);
         }
 
-        /**
-         * 遍历种子页面里所有的a链接
-         */
         seedurl_news.each(function (i, e) {
             var myURL = "";
             try {
@@ -119,11 +110,7 @@ function seedget() {
     });
 }
 
-/**
- * 读取新闻页面
- * @param {} myURL 
- */
-function newsGet(myURL) {
+function newsGet(myURL) { // 读取新闻页面
     request(myURL, function(err, res, body) {
         var html_news = myIconv.decode(body, myEncoding);
         // console.log("error " + html_news);
@@ -141,10 +128,10 @@ function newsGet(myURL) {
         // fetch.source_name = source_name;
         fetch.source_encoding = myEncoding;
         fetch.crawltime = new Date();
-        
+
         // 如果没有keywords, 就用source_name
         fetch.keywords = keywords_format == "" ? source_name : eval(keywords_format);
-        
+
         fetch.title = title_format == "" ? "" :  eval(title_format);
 
         // 上传日期
@@ -168,18 +155,6 @@ function newsGet(myURL) {
         //fetch.source = source_format == "" ? fetch.source_name : eval(source_format).replace("\r\n", "");
         fetch.source_name = "澎湃新闻";
         // console.log(fetch.keywords);
-        /**
-         * 文件转储
-         */
-        // var filename = source_name + "_" +
-        //     "_" + myURL.substring(myURL.lastIndexOf('/') + 1) + ".json";
-        // console.log(filename);
-        // ////存储json
-        // fs.writeFileSync(filename, JSON.stringify(fetch));
-
-        /**
-         * 数据库转储
-         */
         var fetch_url_sql = 'select url from fetches where url=?';
         var fetch_url_sql_Params = [myURL];
         mysql.query(fetch_url_sql, fetch_url_sql_Params, function(qerr, vals, fields){
@@ -193,14 +168,14 @@ function newsGet(myURL) {
                     fetch.crawltime, fetch.content
                 ];
                 // console.log(fetchAddSql_Params);
-                //执行sql，数据库中fetch表里的url属性是unique的，不会把重复的url内容写入数据库
+                // 执行sql，数据库中fetch表里的url属性是unique的，不会把重复的url内容写入数据库
                 mysql.query(fetchAddSql, fetchAddSql_Params, function(qerr, vals, fields) {
                     if (qerr) {
                         console.log(qerr);
                     }
-                }); //mysql写入
+                }); // mysql写入
             }
-        }) 
+        })
 
         // var fetchAddSql = 'INSERT INTO fetches(url,source_name,source_encoding,title,' +
         //             'keywords,author,publish_date,crawltime,content) VALUES(?,?,?,?,?,?,?,?,?)';
