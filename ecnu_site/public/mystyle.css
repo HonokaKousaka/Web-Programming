@@ -10,6 +10,31 @@ h1 {
     color: #333;
 }
 
+/* 主页引导 */
+#mainDiv {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    text-align: center;
+}
+
+/* 主页引导文字 */
+#mainText {
+    width: 70%;
+    margin: 0 auto;
+    text-align: left;
+}
+
+/* 主页引导图片 */
+#Ame {
+    display: block;
+    margin: 0 auto;
+    height: 350px;
+    width: auto;
+}
+
 /* 表单 */
 form {
     margin-bottom: 20px;
@@ -260,9 +285,14 @@ table td {
     background-color: #ddd;
 }
 
-/* 先让contentQueryDiv出现 */
-#contentQueryDiv {
+/* 先显示mainDiv */
+#mainDiv {
     display: block;
+}
+
+/* 先隐藏contentQueryDiv */
+#contentQueryDiv {
+    display: none;
 }
 
 /* 先隐藏hotAnalysisDiv */
@@ -270,10 +300,12 @@ table td {
     display: none;
 }
 
+/* 先隐藏complexQueryDiv */
 #complexQueryDiv {
     display: none;
 }
 
+/* 先隐藏wordCloudDiv */
 #wordCloudDiv {
     display: none;
 }

@@ -15,6 +15,7 @@
 <!--导航栏-->
 <nav>
   <ul class="navbar">
+    <li><a href="#" id="main">主页引导</a></li>
     <li><a href="#" id="contentQuery">内容查询</a></li>
     <li><a href="#" id="complexQuery">复合查询</a></li>
     <li><a href="#" id="hotAnalysis">热度分析</a></li>
@@ -25,6 +26,20 @@
 <h1>
   华东师范大学热点观察
 </h1>
+
+<!--主页引导-->
+<div id="mainDiv">
+  <div id="mainText">
+    <br>欢迎来到Ryan Watson的华东师范大学热点观察！
+    <br>我们收集了华东师范大学“新闻热点”栏目近期的新闻，为您创造了一个方便的检索环境。
+    <br>点击上方“内容查询”按钮，可以进行简单的内容查询。您可以选择查询的条件，也可以选择查询结果排序的方式。
+    <br>点击上方“复合查询”按钮，可以进行多条件的复合查询。您可以选择两个条件进行查询。
+    <br>点击上方“热度分析”按钮，可以进行折线图的生成。输入一个关键词后，该折线图可以为您描绘该关键词每一天出现的数量。
+    <br>点击上方“词云展示”按钮，可以进行词云图的生成。您可以得到一张所有关键词的词云图。
+    <br>点击上方“主页引导”按钮，您可以回到此页面。
+  </div>
+  <img src="ame.webp" alt="Amelia Watson is reading a book." title="Watson正在积极为查询任务筹备" id="Ame">
+</div>
 
 <!--内容查询-->
 <div id="contentQueryDiv">
@@ -154,12 +169,22 @@
     var totalPages;             // 内容查询页面页数的最大值
     var totalPages2;            // 复合查询页面页数的最大值
 
+    // 显示且仅显示主页引导相关内容
+    $("#main").click(function() {
+      $("#contentQueryDiv").hide();
+      $("#complexQueryDiv").hide();
+      $("#hotAnalysisDiv").hide();
+      $("#wordCloudDiv").hide();
+      $("#mainDiv").show();
+    });
+
     // 显示且仅显示内容查询相关内容
     $("#contentQuery").click(function() {
       $("#contentQueryDiv").show();
       $("#complexQueryDiv").hide();
       $("#hotAnalysisDiv").hide();
       $("#wordCloudDiv").hide();
+      $("#mainDiv").hide();
     });
 
     // 显示且仅显示复合查询相关内容
@@ -168,6 +193,7 @@
       $("#hotAnalysisDiv").hide();
       $("#wordCloudDiv").hide();
       $("#complexQueryDiv").show();
+      $("#mainDiv").hide();
     });
 
     // 显示且仅显示热度分析相关内容
@@ -176,14 +202,15 @@
       $("#hotAnalysisDiv").show();
       $("#wordCloudDiv").hide();
       $("#complexQueryDiv").hide();
+      $("#mainDiv").hide();
     });
-
     // 显示且仅显示词云展示相关内容，并且直接绘制词云
     $("#wordCloud").click(function() {
       $("#contentQueryDiv").hide();
       $("#complexQueryDiv").hide();
       $("#hotAnalysisDiv").hide();
       $("#wordCloudDiv").show();
+      $("#mainDiv").hide();
       var keywordsArray_original = [];        // 原始的所有关键词数据，即使重复也存储
       var dataArray = [];                     // 最终被使用的数据，每个元素都是 {name:..., value:...} 的对象
       var allData = [];                       // 所有数据
