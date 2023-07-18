@@ -272,7 +272,7 @@
                     dataArray["useValue"].push(name_value);
                 }
                 // 让对象基于关键词的出现频率从高到低排序
-                dataArray["useValue"] = dataArray["useValue"].sort((a, b) => b.value - a.value).slice(0,100);
+                dataArray["useValue"] = dataArray["useValue"].sort((a, b) => b.value - a.value).slice(0,150);
                 // 绘制云图
                 var myChart = echarts.init(document.getElementById('wordCloudDrawing'));
                 var maskImage = new Image();
@@ -285,7 +285,7 @@
                     series: [
                         {
                             type: 'wordCloud',          // 词云图
-                            gridSize: 3,                // 词的间距
+                            gridSize: 1,                // 词的间距
                             // shape: 'diamond',           // 词云形状，可选diamond，pentagon，circle，triangle，star等形状
                             rotationRange: [-45, 0, 45, 90],
                             maskImage: maskImage,       // 词云背景形状
