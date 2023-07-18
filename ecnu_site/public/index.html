@@ -413,13 +413,13 @@
               padding:15
             }
           },
-          tooltip: {  // 添加tooltip配置
-            trigger: 'axis',  // 触发类型为坐标轴轴线触发
-            formatter: function(params) {  // 格式化tooltip的内容
-              var dataIndex = params[0].dataIndex;  // 获取悬停点的数据索引
-              var dataOfIndex = real_dates[dataIndex];
-              var value = values[dataIndex];  // 根据索引获取对应的数据值
-              return '日期：' + dataOfIndex + ", 数量：" + value;  // 返回自定义格式化后的内容
+          tooltip: {
+            trigger: 'axis',                                      // 触发类型为坐标轴轴线触发
+            formatter: function(params) {                         // 格式化tooltip的内容
+              var dataIndex = params[0].dataIndex;                // 获取悬停点的数据索引
+              var dataOfIndex = real_dates[dataIndex];            // 根据索引获取对应的数据值
+              var value = values[dataIndex];                      // 根据索引获取对应的数据值
+              return '日期：' + dataOfIndex + ", 数量：" + value;   // 返回自定义格式化后的内容
             }
           },
           series: [
