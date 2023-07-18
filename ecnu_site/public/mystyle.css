@@ -12,6 +12,19 @@ h1 {
 
 /* 版权标记 */
 .footer {
+    display: none;
+    left: 0;
+    bottom: 0;
+    width: 98.7%;
+    background-color: transparent;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+}
+
+/* 主页的版权标记 */
+#copyright {
     left: 0;
     bottom: 0;
     width: 98.7%;
