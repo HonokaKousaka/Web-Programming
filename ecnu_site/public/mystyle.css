@@ -444,7 +444,7 @@ table td {
 /* 词云 */
 #wordCloudDrawing {
     width: 800px;
-    height: 500px;
+    height: 600px;
 }
 
 #wordCloudWrapper {
