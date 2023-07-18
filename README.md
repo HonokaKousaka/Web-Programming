@@ -1,7 +1,7 @@
 # Web-Programming
 华东师范大学数据科学与工程学院数据科学与大数据技术专业Web编程课程期末项目 From **10215501434 李睿恩**.
 
-github: https://github.com/HonokaKousaka/Web-Programming
+完整内容详见 github: https://github.com/HonokaKousaka/Web-Programming
 
 核心需求：
 1. 选取1-2个代表性的新闻网站（比如新浪新闻、网易新闻等，或者某个垂直领域权威性的网站比如经济领域的雪球财经、东方财富等，或者体育领域的腾讯体育、虎扑体育等等）建立爬虫，针对不同网站的新闻页面进行分析，爬取出编码、标题、作者、时间、关键词、摘要、内容、来源等结构化信息，存储在数据库中。
