@@ -10,6 +10,18 @@ h1 {
     color: #333;
 }
 
+/* 版权标记 */
+.footer {
+    left: 0;
+    bottom: 0;
+    width: 98.7%;
+    background-color: transparent;
+    padding: 10px;
+    text-align: center;
+    font-size: 14px;
+    color: #333;
+}
+
 /* 主页引导 */
 #mainDiv {
     display: flex;
