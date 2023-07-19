@@ -351,6 +351,64 @@ table td {
     display: none;
 }
 
+/* 先隐藏CommentDiv，并且规定其格式 */
+#commentDiv {
+    display: none;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 500px;
+    height: 400px;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+}
+
+/* 调整上方的字 */
+#commentText {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* 调整中间的框 */
+#messageInput {
+    width: 95.5%;
+    height: 300px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 16px;
+    font-family: "Times New Roman", "STZhongsong", serif;
+    resize: none;
+}
+
+/* 调整文本框里的字 */
+#messageInput::placeholder {
+    font-size: 16px;
+    font-family: "Times New Roman", "STZhongsong", serif;
+    color: #999;
+}
+
+/* 调整按钮 */
+#submitButton {
+    padding: 8px 15px;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+/* 当鼠标悬浮在按钮上时的显示效果 */
+#submitButton:hover {
+    background-color: #45a049;
+}
+
 /* 图表容器 */
 #chartContainerWrapper {
     display: flex;

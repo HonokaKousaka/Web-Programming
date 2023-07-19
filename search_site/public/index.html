@@ -20,6 +20,7 @@
         <li><a href="#" id="complexQuery">复合查询</a></li>
         <li><a href="#" id="hotAnalysis">热度分析</a></li>
         <li><a href="#" id="wordCloud">词云展示</a></li>
+        <li><a href="#" id="comment">留言板块</a></li>
     </ul>
 </nav>
 
@@ -36,6 +37,7 @@
         <br>点击上方“复合查询”按钮，可以进行多条件的复合查询。您可以选择两个条件进行查询。
         <br>点击上方“热度分析”按钮，可以进行折线图的生成。输入一个关键词后，该折线图可以为您描绘该关键词每一天出现的数量。
         <br>点击上方“词云展示”按钮，可以进行词云图的生成。您可以得到一张所有关键词的词云图。
+        <br>点击上方“留言板块”按钮，您可以对该网站做出评价，我们会收到您给出的评价。
         <br>点击上方“主页引导”按钮，您可以回到此页面。
     </div>
     <img src="ame.webp" alt="Amelia Watson is reading a book." title="Watson正在积极为查询任务筹备" id="Ame">
@@ -169,6 +171,15 @@
     </div>
 </div>
 
+<!--留言板块-->
+<div id="commentDiv">
+    <label id="commentText">请留下您宝贵的意见！</label>
+    <div>
+        <textarea id="messageInput" placeholder="请输入留言……"></textarea>
+        <button id="submitButton">提交</button>
+    </div>
+</div>
+
 <!--版权标记-->
 <div class="footer">
     &copy; 2023 Ryan Watson. All rights reserved.
@@ -240,6 +251,7 @@
             $("#hotAnalysisDiv").hide();
             $("#wordCloudDiv").hide();
             $("#mainDiv").show();
+            $("#commentDiv").hide();
             $(".footer").hide();
         });
 
@@ -250,6 +262,7 @@
             $("#hotAnalysisDiv").hide();
             $("#wordCloudDiv").hide();
             $("#mainDiv").hide();
+            $("#commentDiv").hide();
             $(".footer").show();
         });
 
@@ -260,6 +273,7 @@
             $("#wordCloudDiv").hide();
             $("#complexQueryDiv").show();
             $("#mainDiv").hide();
+            $("#commentDiv").hide();
             $(".footer").show();
         });
 
@@ -267,6 +281,18 @@
         $("#hotAnalysis").click(function() {
             $("#contentQueryDiv").hide();
             $("#hotAnalysisDiv").show();
+            $("#wordCloudDiv").hide();
+            $("#complexQueryDiv").hide();
+            $("#mainDiv").hide();
+            $("#commentDiv").hide();
+            $(".footer").show();
+        });
+
+        // 显示且仅显示留言板块相关内容
+        $("#comment").click(function() {
+            $("#commentDiv").show();
+            $("#contentQueryDiv").hide();
+            $("#hotAnalysisDiv").hide();
             $("#wordCloudDiv").hide();
             $("#complexQueryDiv").hide();
             $("#mainDiv").hide();
@@ -280,6 +306,7 @@
             $("#hotAnalysisDiv").hide();
             $("#wordCloudDiv").show();
             $("#mainDiv").hide();
+            $("#commentDiv").hide();
             $(".footer").show();
             // 绘制云图
             var myChart = echarts.init(document.getElementById('wordCloudDrawing'));
@@ -697,6 +724,24 @@
             var paginationInfo2 = "第" + currentPage2 + "页 / 共" + totalPages2 + "页";
             $("#paginationInfo2").text(paginationInfo2);
         }
+
+        var messageContent = "";
+        var submitButton = document.getElementById('submitButton');
+        submitButton.addEventListener('click', function() {
+            var messageInput = document.getElementById('messageInput');
+            messageContent = messageInput.value;
+            fetch('/save-data', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({transData: messageContent})
+            })
+                .then(response => response.json())
+                .then(transData => {
+                    alert(transData.message);
+                });
+        });
     });
 </script>
 </body>

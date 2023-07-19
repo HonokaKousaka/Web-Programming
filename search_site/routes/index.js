@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mysql = require('../mysql.js');
+const fs = require("fs");
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -60,6 +61,23 @@ router.get('/process_complex_query', function(request, response) {
     response.write(JSON.stringify(result));
     response.end();
   });
+});
+
+router.post('/save-data', (req, res) => {
+  var data = req.body.transData.trim() + "\n";
+  var fs = require('fs');
+  if (data !== "\n") {
+    fs.appendFile('E:\\Desktop\\Programme\\Web\\Web-Programming\\ecnu_site\\public\\comment.txt', data, (err) => {
+      if (err) {
+        console.error(err);
+        res.json({message: '提交失败！我们会尽快修复这个错误！'});
+      } else {
+        res.json({message: '提交成功！我们会了解您的需求！'});
+      }
+    });
+  }
+  else
+    res.json({message: '请输入内容后再提交！'})
 });
 
 module.exports = router;
